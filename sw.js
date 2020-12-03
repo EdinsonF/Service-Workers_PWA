@@ -1,5 +1,5 @@
 //Archivos a cachear para usar sin internet
-const nombreCache = 'apv-v1';
+const nombreCache = 'apv-v4';
 const archivos = [
 '/',
 'index.html',
@@ -33,6 +33,16 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e =>{
     console.log("Service Worker activado");
     console.log(e);
+//actualizar nuevas versiones
+    e.waitUntil(
+        caches.keys()
+            .then(keys => {
+                return Promise.all(
+                    keys.filter(key => key !== nombreCache)
+                        .map( key => caches.delete(key))//eliminar versiones anteriores
+                )
+            })
+    )
 });
 
 
